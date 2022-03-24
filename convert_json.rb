@@ -4,13 +4,11 @@ require 'json'
 module ConvertJson
 
   def convert_json_to_csv(json)
-    out_array = arr(json)
+    json_rows = array_with_rows(json)
     header_keys = head_colums(out_array)
     csv_string = CSV.generate do |csv|
       csv << header_keys.keys
-      out_array.each do |row|
-        csv << header_keys.merge(row).values
-      end
+      json_rows.each {|row| csv << header_keys.merge(row).values}
     end
     csv_string
   end
@@ -46,7 +44,6 @@ module ConvertJson
 
       return columns
     elsif scalars.include? object.class
-        # Remove trailing slash from path
         end_path = path[0, path.length - 1]
         columns[end_path] = object
         return columns
@@ -68,23 +65,18 @@ module ConvertJson
     end
   end
 
-  def arr(json)
+  def array_with_rows(json)
     in_array = array_from json
     in_array.map! { |x| nils_to_strings x }
-
     out_array = []
-    in_array.each do |row|
-      out_array[out_array.length] = flatten row
-    end
+    in_array.each {|row| out_array[out_array.length] = flatten row}
     out_array
   end
 
-  def head_colums(out_array)
+  def head_colums(array)
     header_keys = {}
-    out_array.each do |row|
-      row.each do |elem|
-        header_keys[elem.first]='' unless header_keys.include?(elem)
-      end
+    array.each do |row|
+      row.each {|elem| header_keys[elem.first]='' unless header_keys.include?(elem)}
     end
     header_keys
   end

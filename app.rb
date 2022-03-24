@@ -4,8 +4,8 @@ include ConvertJson
 
 json = JSON.parse(File.open('q.json').read)
 
-header_keys = head_colums arr(json)
-out_array = arr json
+header_keys = head_colums array_with_rows(json)
+out_array = array_with_rows json
 
 CSV.open('test_csv.csv', 'w') do |csv|
   csv << header_keys.keys
@@ -15,4 +15,4 @@ CSV.open('test_csv.csv', 'w') do |csv|
 end
 
 
-puts convert_json_to_csv(json)
+# puts convert_json_to_csv(json)

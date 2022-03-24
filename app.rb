@@ -1,5 +1,5 @@
-require_relative 'convert_json'
-include ConvertJson
+require_relative 'convertor'
+include Convertor
 
 
 json = JSON.parse(File.open('q.json').read)
